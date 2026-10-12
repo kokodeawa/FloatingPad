@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+def padCompileSdk = (project.findProperty('pad.compileSdk') ?: '28').toString().toInteger()
+def padBuildTools = project.findProperty('pad.buildTools')
+
+android {
+    compileSdkVersion padCompileSdk
+    if (padBuildTools) {
+        buildToolsVersion padBuildTools.toString()
+    }
+
+    defaultConfig {
+        applicationId "com.example.floatingpad"
+        minSdkVersion 24
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        encoding "UTF-8"
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
+    // ADB propio (depuración inalámbrica).
+    // Versiones fijadas por compatibilidad con el D8 de AGP 4.2.2 (las más recientes provocan un NullPointerException al
+    // convertir a dex). Si 1.0.1 no se resuelve, prueba 2.0.0 o 3.0.0.
+    implementation 'com.github.MuntashirAkon:libadb-android:1.0.1'
+    implementation 'com.github.MuntashirAkon:sun-security-android:1.1'
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
+}
